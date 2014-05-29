@@ -1,56 +1,45 @@
 module Radriar
   module Roar::Representers
     include Roar::Links
-    mattr_accessor :representer_namespace
     mattr_accessor :hypermedia
 
-    def represent(*args)
-      opts = args.last.is_a?(Hash) ? args.pop : {}
-      raise ArgumentError.new("nil can't be represented") unless args.first
+    def represent(*args, with: nil, represent: nil, context: nil)
+      representer = find_representer(args, with)
+      options = {}
 
-      unless opts[:with]
-        infered = infer_representer(args)
-        if infered
-          opts[:with] = infered
-        else
-          raise ArgumentError.new(
-            "Can't infer representer, need to specify :with option for class #{klazz}"
-          )
-        end
-
-        with = options[:with]
-
-        if with.is_a?(Symbol)
-          with = "#{representer_namespace}::#{with.to_s.classify}".constantize
-        end
-
-        if with.is_a?(Class)
-          with.new(*args)
-        elsif args.length > 1
-          raise ArgumentError.new("Can't represent using module with more than one argument")
-        else
-          representable = args.first.extend(with)
-          if opts[:represent]
-            # TODO: workaround for not having as_json
-            JSON.parse(reprsentable.to_json(opts[:represent]))
-          else
-            representable
-          end
-        end
+      if params[:fields].present?
+        options[:include] = params[:fields].split(",").map(&:to_sym)
       end
+      options.merge!(represent) if represent 
+
+      if representer.is_a?(Class)
+        represented = representer.new(*args)
+      elsif args.length > 1
+        raise ArgumentError.new("Can't represent using module with more than one argument")
+      elsif representer.is_a?(Module)
+        represented = args.first.extend(representer)
+      else
+        raise ArgumentError.new("Can't infer, instantiate or extend representer")
+      end
+ 
+      represented.to_hash(options)
     end
 
-    def represent_each(collection, *args, represent: nil, context: nil)
-      result = {}
-      unless collection.empty?
-        result = add_links(context) if context
-        result['total'] = collection.size
-        result['_embedded'] = {
-          collection.first.class.name.pluralize.downcase.to_sym =>
+    def represent_each(collection, *args, with: nil, represent: nil, context: nil)
+      if Radriar::Representable.hypermedia?
+        result = {}
+        unless collection.empty?
+          result = add_links(context) if context
+          result['total'] = collection.size
+          result['_embedded'] = {
+            collection.first.class.name.pluralize.downcase.to_sym =>
             represent_collection(collection, *args)
-        }
+          }
+        end
+        result
+      else
+        represent_collection(collection, *args)
       end
-      result
     end
 
     def represent_collection(collection, *args)
@@ -60,9 +49,30 @@ module Radriar
     end
 
     private
-    def infer_representer(args)
-      klazz = args.first.class.name
-      "#{self.represented_namespace}::#{klazz}".safe_constantize
+    def find_representer(args, with)
+      raise ArgumentError.new("nil can't be represented") unless args.first
+
+      unless with
+        klazz = args.first.class.name
+        infered = "#{representer_namespace}::#{klazz}".safe_constantize
+        if infered
+          representer = infered
+        else
+          raise ArgumentError.new(
+            "Can't infer representer, need to specify :with option for class #{klazz}"
+          )
+        end
+      end
+
+      if with.is_a?(Symbol)
+        "#{representer_namespace}::#{with.to_s.classify}".constantize
+      else
+        representer
+      end
+    end
+
+    def representer_namespace
+      Radriar::Representable.representer_namespace
     end
   end
 end
