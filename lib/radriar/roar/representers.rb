@@ -22,6 +22,7 @@ module Radriar
         raise ArgumentError.new("Can't infer, instantiate or extend representer")
       end
  
+      options[:exclude] = [:links] unless Radriar::Representable.hypermedia?
       represented.to_hash(options)
     end
 
