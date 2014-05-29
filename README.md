@@ -20,6 +20,14 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+## Features
+
+__TODO__: Redact
+* Key translation (Snake case to underscore and viceversa).
+* Optional field includes (Pass `fields` parameter in URL).
+* Conventional error responses.
+* Optional inclusion/exclusion of hypermedia (HAL).
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/radriar/fork )
