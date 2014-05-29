@@ -10,7 +10,7 @@ module Radriar
       if params[:fields].present?
         options[:include] = params[:fields].split(",").map(&:to_sym)
       end
-      options.merge!(represent) if represent 
+      options.merge!(represent) if represent
 
       if representer.is_a?(Class)
         represented = representer.new(*args)
@@ -21,7 +21,7 @@ module Radriar
       else
         raise ArgumentError.new("Can't infer, instantiate or extend representer")
       end
- 
+
       options[:exclude] = [:links] unless Radriar::Representable.hypermedia?
       represented.to_hash(options)
     end
@@ -33,7 +33,7 @@ module Radriar
           result = add_links(context) if context
           result['total'] = collection.size
           result['_embedded'] = {
-            collection.first.class.name.pluralize.downcase.to_sym =>
+            collection.first.class.name.pluralize.underscore.to_sym =>
             represent_collection(collection, *args)
           }
         end
