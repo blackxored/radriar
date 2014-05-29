@@ -9,5 +9,7 @@ module Radriar
   end
 end
 
+require "representable/hash"
 require "radriar/roar/links"
 require "radriar/roar/representers"
+require "radriar/roar/key_translation"
