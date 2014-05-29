@@ -16,8 +16,8 @@ module Radriar
       def create_handlers
         @create_handlers ||= {
           success: ->(record) { represent(record) },
-          failure: ->(errors) { error!({ 
-            message: "Validation failed", errors: errors }, 422) 
+          failure: ->(errors) { error!({
+            message: "Validation failed", errors: errors }, 422)
           }
         }
       end
@@ -29,8 +29,8 @@ module Radriar
       def update_handlers
         @update_handlers ||= {
           success: ->(record) { represent(record) },
-          failure: ->(errors) { error!({ 
-            message: "Validation failed", 
+          failure: ->(errors) { error!({
+            message: "Validation failed",
             errors: errors }, 422)
           }
         }
