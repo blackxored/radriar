@@ -25,6 +25,7 @@ class ::Grape::API
       Radriar::Representable.hypermedia = hypermedia
 
       include Radriar::Roar::KeyTranslation if translate_keys
+      include Radriar::Roar::HAL
     end
   end
 end

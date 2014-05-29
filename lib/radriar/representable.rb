@@ -10,6 +10,8 @@ module Radriar
 end
 
 require "representable/hash"
+require "roar/representer/json/hal"
 require "radriar/roar/links"
 require "radriar/roar/representers"
 require "radriar/roar/key_translation"
+require "radriar/roar/hal"
