@@ -10,7 +10,7 @@ module Radriar
 end
 
 class ::Grape::API
-  def self.use_radriar!(hypermedia: false, representer_namespace: nil, translate_keys: false)
+  def self.radriarize(hypermedia: false, representer_namespace: nil, translate_keys: false)
     class_eval do
       format :json
       default_format :json
