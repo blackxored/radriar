@@ -1,6 +1,6 @@
 # Radriar
 
-TODO: Write a gem description
+A set of opinionated API design helpers for Ruby.
 
 ## Installation
 
