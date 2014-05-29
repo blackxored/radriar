@@ -10,7 +10,7 @@ module Radriar
 end
 
 class ::Grape::API
-  def self.use_radriar!(hypermedia: false, representer_namespace: nil)
+  def self.use_radriar!(hypermedia: false, representer_namespace: nil, translate_keys: false)
     class_eval do
       format :json
       default_format :json
@@ -23,6 +23,8 @@ class ::Grape::API
 
       Radriar::Representable.representer_namespace = representer_namespace
       Radriar::Representable.hypermedia = hypermedia
+
+      include Radriar::Roar::KeyTranslation if translate_keys
     end
   end
 end

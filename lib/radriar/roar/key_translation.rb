@@ -40,7 +40,6 @@ module Radriar
 
       module Representer
         def from_hash(data, options={}, binding_builder=::Representable::Hash::PropertyBinding)
-          binding.pry
           data = filter_wrap(UnderscoreKeys.new(data), options)
           update_properties_from(data, options, binding_builder)
         end
