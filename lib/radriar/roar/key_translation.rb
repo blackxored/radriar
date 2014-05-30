@@ -48,9 +48,15 @@ module Radriar
           CamelizeKeys.new(super)
         end
       end
-      
+
       included do
         ::Representable::Hash.prepend(Representer)
+
+        Grape::Endpoint.class_eval do
+          define_method(:params) do
+            @params ||= UnderscoreKeys.new(@request.params)
+          end
+        end
       end
     end
   end
