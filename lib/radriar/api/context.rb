@@ -42,7 +42,7 @@ module Radriar
           failure: ->(msg) { error!(msg, 403)}
         }
       end
-      alias_method :success_or_forbidden_handlers, :delete_params
+      alias_method :delete_params, :success_or_forbidden_handlers
     end
   end
 end
