@@ -52,7 +52,7 @@ module Radriar
       included do
         ::Representable::Hash.prepend(Representer)
 
-        Grape::Endpoint.class_eval do
+        ::Grape::Endpoint.class_eval do
           define_method(:params) do
             @params ||= UnderscoreKeys.new(@request.params)
           end
