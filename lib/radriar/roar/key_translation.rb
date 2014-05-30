@@ -4,6 +4,27 @@ module Radriar
     module KeyTranslation
       extend ActiveSupport::Concern
 
+      included do
+        ::Representable::Hash.module_eval do
+          # TODO: Module#prepend giving too much headache
+          alias_method :old_to_hash, :to_hash
+          define_method(:from_hash) do |data, options={}, binding_builder=::Representable::Hash::PropertyBinding|
+            data = filter_wrap(UnderscoreKeys.new(data), options)
+            update_properties_from(data, options, binding_builder)
+          end
+
+          define_method(:to_hash) do |options={}, binding_builder=::Representable::Hash::PropertyBinding|
+            CamelizeKeys.new(old_to_hash(options, binding_builder))
+          end
+        end
+
+        ::Grape::Endpoint.class_eval do
+          define_method(:params) do
+            @params ||= UnderscoreKeys.new(@request.params)
+          end
+        end
+      end
+
       class KeyTranslatorHash < Hashie::Mash
         protected
         def convert_key(key)
@@ -34,28 +55,6 @@ module Radriar
         protected
         def convert_key(key)
           key.to_s.camelize(:lower)
-        end
-      end
-
-
-      module Representer
-        def from_hash(data, options={}, binding_builder=::Representable::Hash::PropertyBinding)
-          data = filter_wrap(UnderscoreKeys.new(data), options)
-          update_properties_from(data, options, binding_builder)
-        end
-
-        def to_hash(options={}, binding_builder=::Representable::Hash::PropertyBinding)
-          CamelizeKeys.new(super)
-        end
-      end
-
-      included do
-        ::Representable::Hash.prepend(Representer)
-
-        ::Grape::Endpoint.class_eval do
-          define_method(:params) do
-            @params ||= UnderscoreKeys.new(@request.params)
-          end
         end
       end
     end
