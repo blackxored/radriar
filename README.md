@@ -59,8 +59,8 @@ turn your API from this:
   "registered_at": "...",
   "social_urls": {
     "github":  "https://github.com/blackxored",
-      "twitter": "https://twitter.com/blackxored"
-    },
+    "twitter": "https://twitter.com/blackxored"
+  },
   "comments": [ /* ... */],
 }
 ```
@@ -148,7 +148,19 @@ All your collection get automated pagination by default. In the case of hypermed
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/radriar/fork )
+### Roadmap
+
+* Check [TODO.md](https://github.com/blackxored/radriar/blob/master/TODO.md)
+* Discuss & implement new adapters:
+  - [Active Model Serializers](https://github.com/rails-api/active_model_serializers)
+  - [Grape::Entity](https://github.com/intridea/grape-entity)
+* Discuss & implement new hypermedia formats:
+  - [Collection+JSON](http://amundsen.com/media-types/collection/)
+  - [Siren](https://github.com/kevinswiber/siren)
+
+### Process
+
+1. Fork it ( https://github.com/blackxored/radriar/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
