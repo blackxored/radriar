@@ -5,7 +5,6 @@ module Radriar
       extend ActiveSupport::Concern
 
       included do
-        binding.pry
         unless ::Representable::Hash.instance_methods.include?(:__radriar_old_to_hash)
           ::Representable::Hash.module_eval do
             # TODO: Module#prepend giving too much headache
@@ -75,7 +74,7 @@ module Radriar
       class CamelizeKeys < KeyTranslatorHash
         protected
         def convert_key(key)
-          key.to_s.camelize(:lower)
+          key.to_s.start_with?("_") ? key.to_s : key.to_s.camelize(:lower)
         end
       end
     end
