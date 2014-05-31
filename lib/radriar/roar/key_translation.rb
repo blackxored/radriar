@@ -8,19 +8,33 @@ module Radriar
         ::Representable::Hash.module_eval do
           # TODO: Module#prepend giving too much headache
           alias_method :old_to_hash, :to_hash
+          alias_method :old_from_hash, :from_hash
+
           define_method(:from_hash) do |data, options={}, binding_builder=::Representable::Hash::PropertyBinding|
-            data = filter_wrap(UnderscoreKeys.new(data), options)
-            update_properties_from(data, options, binding_builder)
+            if Radriar::Representable.translate_keys?
+              data = filter_wrap(UnderscoreKeys.new(data), options)
+              update_properties_from(data, options, binding_builder)
+            else
+              old_from_hash(data, options, binding_builder)
+            end
           end
 
           define_method(:to_hash) do |options={}, binding_builder=::Representable::Hash::PropertyBinding|
-            CamelizeKeys.new(old_to_hash(options, binding_builder))
+            if Radriar::Representable.translate_keys?
+              CamelizeKeys.new(old_to_hash(options, binding_builder))
+            else
+              old_to_hash(options, binding_builder)
+            end
           end
         end
 
         ::Grape::Endpoint.class_eval do
           define_method(:params) do
-            @params ||= UnderscoreKeys.new(@request.params)
+            if Radriar::Representable.translate_keys?
+              @params ||= UnderscoreKeys.new(@request.params)
+            else
+              @params ||= @request.params
+            end
           end
         end
       end

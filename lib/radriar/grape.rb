@@ -20,12 +20,12 @@ class ::Grape::API
       helpers Radriar::API::Context
       helpers Radriar::API::StrongParametersSupport
       helpers Radriar::Roar::Representers
+      include Radriar::Roar::KeyTranslation
+      include Radriar::Roar::HAL
 
       Radriar::Representable.representer_namespace = representer_namespace
       Radriar::Representable.hypermedia = hypermedia
-
-      include Radriar::Roar::KeyTranslation if translate_keys
-      include Radriar::Roar::HAL
+      Radriar::Representable.translate_keys = translate_keys
     end
   end
 end

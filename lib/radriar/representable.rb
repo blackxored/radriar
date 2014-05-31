@@ -1,10 +1,13 @@
 module Radriar
   module Representable
     mattr_accessor :representer_namespace
-    mattr_accessor :hypermedia
 
-    def self.hypermedia?
-      !!hypermedia
+    [:hypermedia, :translate_keys].each do |option|
+      mattr_accessor option.to_sym
+
+      self.define_singleton_method "#{option}?".to_sym do
+        !!send(option.to_sym)
+      end
     end
   end
 end
