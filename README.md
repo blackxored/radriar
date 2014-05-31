@@ -40,22 +40,24 @@ class UserAPI < Grape::API
              translate_keys: true
 ```
 
+### Dynamic APIs
+
 Assuming you're using the right conventions (to be redacted) this will magically
 turn your API from this:
 
 ```javascript
 {
-    "id": "blackxored",
-    "first_name": "Adrian",
-    "last_name": "Perez",
-    "avatar_url": "...",
-    "hireable": false,
-    "registered_at": "...",
-    "social_urls": {
-        "github":  "https://github.com/blackxored",
-        "twitter": "https://twitter.com/blackxored"
+  "id": "blackxored",
+  "first_name": "Adrian",
+  "last_name": "Perez",
+  "avatar_url": "...",
+  "hireable": false,
+  "registered_at": "...",
+  "social_urls": {
+    "github":  "https://github.com/blackxored",
+      "twitter": "https://twitter.com/blackxored"
     },
-    "comments": [ /* ... */],
+  "comments": [ /* ... */],
 }
 ```
 
@@ -63,32 +65,35 @@ To this:
 
 ```javascript
 {
-    "_links": {
-        "html": {
-            "href": "/#/u/blackxored"
-        },
-        "self": {
-            "href": "/users/blackxored"
-        },
-        "timeline": {
-            "href": "/users/blackxored/timeline"
-        }
+  "_links": {
+    "self": {
+      "href": "/users/blackxored"
     },
-    "_embedded": {
-      "total": 2,
-      "comments": [ /* ... */ ]
+    "html": {
+      "href": "/#/u/blackxored"
     },
-    "id": "blackxored",
-    "firstName": "Adrian",
-    "lastName": "Perez",
-    "avatarUrl": "...",
-    "hireable": false,
-    "registeredAt": "2013-06-18T06:37:39.248Z",
-    "socialUrls": {
-        "github":  "https://github.com/blackxored",
-        "twitter": "https://twitter.com/blackxored"
+    "timeline": {
+      "href": "/users/blackxored/timeline"
     },
+  },
+  "_embedded": {
+    "total": 2,
+    "comments": [ /* ... */ ]
+  },
+  "id": "blackxored",
+  "firstName": "Adrian",
+  "lastName": "Perez",
+  "avatarUrl": "...",
+  "hireable": false,
+  "registeredAt": "2013-06-18T06:37:39.248Z",
+  "socialUrls": {
+    "github":  "https://github.com/blackxored",
+    "twitter": "https://twitter.com/blackxored"
+  },
 }
+```
+
+### Partial Responses
 
 You can request partial responses (ideal for mobile apps). Just hit any endpoint with an optional `fields` attribute.
 
@@ -104,9 +109,36 @@ Will return the following JSON document:
 
 ```javascript
 {
-    "id": "blackxored"
-    "firstName": "Adrian",
-    "avatarUrl: "..."
+  "id": "blackxored"
+  "firstName": "Adrian",
+  "avatarUrl": "..."
+}
+```
+
+### Error Conventions
+
+__TODO__: Redact
+
+### Pagination
+
+__TODO__: Test and implement
+
+All your collection get automated pagination by default. In the case of hypermedia APIs it also includes pagination links.
+
+```javascript
+{
+    "_links": {
+        "self":  "/collection?page=3",
+        "first": "/collection",
+        "next":  "/collection?page=4"
+        "prev":  "/collection?page=2",
+        "last":  "/collection?page=10"
+    },
+    "_embedded": {
+      "collection": [ /*...*/]
+    },
+    "total": 250,
+    "per": 25
 }
 ```
 
