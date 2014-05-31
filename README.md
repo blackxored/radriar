@@ -48,14 +48,14 @@ turn your API from this:
     "id": "blackxored",
     "first_name": "Adrian",
     "last_name": "Perez",
+    "avatar_url": "...",
     "hireable": false,
-    "avatar_url": "https://secure.gravatar.com/avatar/0c21d966c02665709ebff791484c09e9?s=32&d=http://skindler.com/images/default-avatar.png",
-    "registered_at": "2013-06-18T06:37:39.248Z",
+    "registered_at": "...",
     "social_urls": {
-        "github": "https://github.com/blackxored",
+        "github":  "https://github.com/blackxored",
         "twitter": "https://twitter.com/blackxored"
     },
-    "username": "blackxored"
+    "comments": [ /* ... */],
 }
 ```
 
@@ -74,17 +74,41 @@ To this:
             "href": "/users/blackxored/timeline"
         }
     },
+    "_embedded": {
+      "total": 2,
+      "comments": [ /* ... */ ]
+    },
     "id": "blackxored",
     "firstName": "Adrian",
     "lastName": "Perez",
-    "avatarUrl": "https://secure.gravatar.com/avatar/0c21d966c02665709ebff791484c09e9?s=32&d=http://skindler.com/images/default-avatar.png",
+    "avatarUrl": "...",
     "hireable": false,
     "registeredAt": "2013-06-18T06:37:39.248Z",
     "socialUrls": {
-        "github": "https://github.com/blackxored",
+        "github":  "https://github.com/blackxored",
         "twitter": "https://twitter.com/blackxored"
     },
 }
+
+You can request partial responses (ideal for mobile apps). Just hit any endpoint with an optional `fields` attribute.
+
+(__TODO__: Check that key translation works at the partial response level)
+
+From the response above:
+
+```shell
+curl $URL?fields=id,firstName,avatarUrl
+```
+
+Will return the following JSON document: 
+
+```javascript
+{
+    "id": "blackxored"
+    "firstName": "Adrian",
+    "avatarUrl: "..."
+}
+```
 
 ## Contributing
 
