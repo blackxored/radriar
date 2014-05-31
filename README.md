@@ -8,15 +8,19 @@ Add this line to your application's Gemfile:
 
     gem 'radriar'
 
-## Includes
+## Conventions and included components
 
-* [representable](https://github.com/apotonick/representable)
-* [roar](https://github.com/apotonick/roar)
-* [grape](https://github.com/intridea/grape)
+* API based on [Grape](https://github.com/intridea/grape)
+* Model representation with [representable](https://github.com/apotonick/representable)
+* Use of the `represent` and `represent_each` helpers inside the API, or a Grape formatter
+  _(coming soon)_.
+* Hypermedia features are based on [HAL](http://stateless.co/hal_specification.html) and
+require [Roar](https://github.com/apotonick/roar).
 
-## Features
+## Key Features
 
 __TODO__: Redact
+
 * Key translation (Snake case to underscore and viceversa).
 * Optional field includes (Pass `fields` parameter in URL).
 * Conventional error responses.
@@ -105,7 +109,7 @@ From the response above:
 curl $URL?fields=id,firstName,avatarUrl
 ```
 
-Will return the following JSON document: 
+Will return the following JSON document:
 
 ```javascript
 {
