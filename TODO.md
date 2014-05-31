@@ -38,3 +38,5 @@
     },
   }
   ```
+
+* Transparently convert Representable module decorators into class decorators.
