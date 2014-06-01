@@ -3,8 +3,9 @@ module Radriar
     include Roar::Links
     mattr_accessor :hypermedia
 
-    def represent(*args, with: nil, represent: nil, context: nil)
-      representer = find_representer(args, with)
+    def represent(obj, *args, with: nil, represent: nil, context: nil)
+      binding.pry
+      representer = find_representer(obj, with)
       options = {}
 
       if params[:fields].present?
@@ -13,11 +14,11 @@ module Radriar
       options.merge!(represent) if represent
 
       if representer.is_a?(Class)
-        represented = representer.new(*args)
+        represented = representer.new(obj)
       elsif args.length > 1
         raise ArgumentError.new("Can't represent using module with more than one argument")
       elsif representer.is_a?(Module)
-        represented = args.first.extend(representer)
+        represented = obj.extend(representer)
       else
         raise ArgumentError.new("Can't infer, instantiate or extend representer")
       end
@@ -50,11 +51,11 @@ module Radriar
     end
 
     private
-    def find_representer(args, with)
-      raise ArgumentError.new("nil can't be represented") unless args.first
+    def find_representer(obj, with)
+      raise ArgumentError.new("nil can't be represented") unless obj
 
       unless with
-        klazz = args.first.class.name
+        klazz = obj.class.name
         infered = "#{representer_namespace}::#{klazz}".safe_constantize
         if infered
           representer = infered
