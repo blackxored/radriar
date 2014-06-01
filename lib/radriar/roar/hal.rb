@@ -9,7 +9,7 @@ module Radriar
             embedded = bin[:embedded]
             return super unless embedded
             if Radriar::Representable.hypermedia?
-              super(bin, doc[:_embedded] ||= {})
+              super(bin, doc['_embedded'] ||= {})
             else
               super
             end
