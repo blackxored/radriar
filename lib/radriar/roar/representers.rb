@@ -4,7 +4,6 @@ module Radriar
     mattr_accessor :hypermedia
 
     def represent(obj, *args, with: nil, represent: nil, context: nil)
-      binding.pry
       representer = find_representer(obj, with)
       options = {}
 
