@@ -30,8 +30,8 @@ module Radriar
       if Radriar::Representable.hypermedia?
         result = {}
         unless collection.empty?
-          result = add_links(context) if context
-          result['total'] = collection.size
+          result['total']  = collection.size
+          result['_links'] = add_links
           result['_embedded'] = {
             collection.first.class.name.pluralize.underscore.to_sym =>
             represent_collection(collection, *args)
