@@ -33,4 +33,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rr"
   spec.add_development_dependency "grape-bugsnag"
   spec.add_development_dependency "garner"
+  spec.add_development_dependency "coveralls"
 end
