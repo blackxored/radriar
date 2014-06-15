@@ -1,6 +1,7 @@
 # Radriar
 
 [![Gem Version](https://badge.fury.io/rb/radriar.png)](http://badge.fury.io/rb/radriar) [![Build Status](https://travis-ci.org/blackxored/radriar.png)](https://travis-ci.org/blackxored/radriar) [![Coverage Status](https://coveralls.io/repos/blackxored/radriar/badge.png?branch=master)](https://coveralls.io/r/blackxored/radriar) [![Dependency Status](https://gemnasium.com/blackxored/radriar.png)](https://gemnasium.com/blackxored/radriar) [![Code Climate](https://codeclimate.com/github/blackxored/radriar.png)](https://codeclimate.com/github/blackxored/radriar)
+
 A set of opinionated API design helpers for Ruby.
 
 ## Installation
